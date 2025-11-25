@@ -68,6 +68,8 @@ The application is structured into the following logical modules based on the us
 3.  **Share Module:** Manages the product creation flow (Camera/Gallery integration).
 4.  **Demands Module:** Tracks outgoing requests and incoming approvals.
 5.  **Profile Module:** Manages user settings and listing history.
+6.  **Chat Module:** Handles real-time messaging between the donor and the receiver.
+
 
 ---
 
