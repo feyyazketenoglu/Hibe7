@@ -72,6 +72,6 @@ The application is structured into the following logical modules based on the us
 ---
 
 ## 4. Development Team
-* **Ömer Faruk Akman** - Android Developer
+* **Ömer Faruk** - Android Developer
 * **Feyyaz** - Android Developer
 * **Ares** - Android Developer
