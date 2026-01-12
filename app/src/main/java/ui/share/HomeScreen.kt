@@ -31,7 +31,6 @@ import com.example.hibe7.ui.auth.HibeOrange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
-// --- RENKLER ---
 val BackgroundColor = Color(0xFFFDFBF7)
 val SearchBarColor = Color(0xFFF5F5F5) // Hafif gri arka plan
 val TitleColor = Color(0xFF1A1C29)
@@ -43,20 +42,20 @@ fun HomeScreen(onProductClick: (Product) -> Unit) {
     var productList by remember { mutableStateOf<List<Product>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
 
-    // --- STATE'LER ---
+
     var searchText by remember { mutableStateOf("") }
     var showFilterSheet by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState()
 
-    // Filtre Seçenekleri
+
     val categories = listOf("Tümü", "Kitap", "Kırtasiye", "Giyim", "Elektronik", "Diğer")
     val usages = listOf("Farketmez", "Sıfır", "Kullanılmış")
 
-    // Aktif Filtreler
+
     var selectedCategory by remember { mutableStateOf("Tümü") }
     var selectedUsage by remember { mutableStateOf("Farketmez") }
 
-    // Firebase Veri Çekme
+
     LaunchedEffect(Unit) {
         firestore.collection("products")
             .orderBy("timestamp", Query.Direction.DESCENDING)
@@ -81,13 +80,13 @@ fun HomeScreen(onProductClick: (Product) -> Unit) {
                     .fillMaxWidth()
                     .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 10.dp)
             ) {
-                // --- ÜST BAR (SEARCH BAR + ZİL) ---
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    // ARAMA ÇUBUĞU
+
                     TextField(
                         value = searchText,
                         onValueChange = { searchText = it },
@@ -120,7 +119,7 @@ fun HomeScreen(onProductClick: (Product) -> Unit) {
                         singleLine = true
                     )
 
-                    // BİLDİRİM ZİLİ
+
                     Icon(
                         imageVector = Icons.Outlined.Notifications,
                         contentDescription = "Bildirimler",
@@ -131,7 +130,7 @@ fun HomeScreen(onProductClick: (Product) -> Unit) {
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                // Dinamik Başlık
+
                 val catTitle = if (selectedCategory == "Tümü") "Ürün Kategorisi" else selectedCategory
                 val usageTitle = if (selectedUsage != "Farketmez") "($selectedUsage)" else ""
 
@@ -190,7 +189,7 @@ fun HomeScreen(onProductClick: (Product) -> Unit) {
             }
         }
 
-        // --- FİLTRE EKRANI (BOTTOM SHEET) ---
+
         if (showFilterSheet) {
             ModalBottomSheet(
                 onDismissRequest = { showFilterSheet = false },
@@ -254,7 +253,7 @@ fun HomeScreen(onProductClick: (Product) -> Unit) {
     }
 }
 
-// --- FİLTRE SATIRI ---
+
 @Composable
 fun FilterOptionRow(text: String, isSelected: Boolean, onSelect: () -> Unit) {
     Row(
@@ -270,12 +269,12 @@ fun FilterOptionRow(text: String, isSelected: Boolean, onSelect: () -> Unit) {
             colors = RadioButtonDefaults.colors(selectedColor = HibeOrange)
         )
         Spacer(modifier = Modifier.width(8.dp))
-        // --- DÜZELTME: Yazı Rengi Siyah ---
+
         Text(text = text, fontSize = 16.sp, color = Color.Black)
     }
 }
 
-// --- ÜRÜN KARTI ---
+
 @Composable
 fun ProductCard(product: Product, onClick: () -> Unit) {
     Card(
