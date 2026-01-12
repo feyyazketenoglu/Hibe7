@@ -27,18 +27,15 @@ class DemandRepository {
             return
         }
 
-        // ÖNCE KONTROL ET: Bu kullanıcı bu ürüne daha önce talep atmış mı?
         firestore.collection("demands")
             .whereEqualTo("productId", productId)
             .whereEqualTo("requesterId", myUid)
             .get()
             .addOnSuccessListener { snapshot ->
                 if (!snapshot.isEmpty) {
-                    // EĞER KAYIT VARSA DURDUR
                     Log.d(TAG, "Zaten talep var, yenisi oluşturulmadı.")
                     onResult(false, "Bu ürün için zaten bir talebiniz var. Sohbetlerden devam edebilirsiniz.")
                 } else {
-                    // KAYIT YOKSA YENİSİNİ OLUŞTUR
                     createNewDemand(myUid, productId, ownerId, productName, productImage, requesterName, onResult)
                 }
             }
@@ -65,14 +62,13 @@ class DemandRepository {
             productName = productName,
             productImage = productImage,
             requesterName = requesterName,
-            status = "Sohbet Başladı", // Durumu sabitledik
+            status = "Sohbet Başladı",
             timestamp = System.currentTimeMillis()
         )
 
         firestore.collection("demands").document(demandId)
             .set(newDemand)
             .addOnSuccessListener {
-                // Talep kaydı oluştu, şimdi sohbeti aç/güncelle
                 createOrUpdateChatChannel(myUid, ownerId, onResult)
             }
             .addOnFailureListener { e ->

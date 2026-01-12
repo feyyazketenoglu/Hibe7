@@ -30,7 +30,6 @@ fun FavoritesScreen(
 
     LaunchedEffect(myUid) {
         if (myUid != null) {
-            // 1. Önce kullanıcının favori listesini çek
             firestore.collection("favorites")
                 .whereEqualTo("userId", myUid)
                 .addSnapshotListener { snapshot, _ ->
@@ -41,34 +40,27 @@ fun FavoritesScreen(
                             favoriteProducts = emptyList()
                             isLoading = false
                         } else {
-                            // 2. Favori ID'lerine göre Ürünleri Çek
                             val tempProducts = mutableListOf<Product>()
                             var fetchCount = 0
 
                             for (pid in productIds) {
-                                // --- DÜZELTME BURADA YAPILDI ---
-                                // document(pid) yerine whereEqualTo("id", pid) kullanıyoruz.
-                                // Çünkü kaydettiğimiz pid, belgenin adı değil, içindeki 'id' alanıdır.
                                 firestore.collection("products")
                                     .whereEqualTo("id", pid)
                                     .get()
                                     .addOnSuccessListener { querySnapshot ->
                                         if (!querySnapshot.isEmpty) {
-                                            // İlk eşleşen ürünü al
                                             val product = querySnapshot.documents[0].toObject(Product::class.java)
                                             if (product != null) {
                                                 tempProducts.add(product)
                                             }
                                         }
                                         fetchCount++
-                                        // Hepsi bittiğinde listeyi güncelle
                                         if (fetchCount == productIds.size) {
                                             favoriteProducts = tempProducts
                                             isLoading = false
                                         }
                                     }
                                     .addOnFailureListener {
-                                        // Hata olsa bile sayacı artır ki sonsuz yüklemede kalmasın
                                         fetchCount++
                                         if (fetchCount == productIds.size) {
                                             favoriteProducts = tempProducts
@@ -115,7 +107,6 @@ fun FavoritesScreen(
                 modifier = Modifier.fillMaxSize()
             ) {
                 items(favoriteProducts) { product ->
-                    // ProductCard HomeScreen.kt içinde tanımlı olduğu için buradan çağrılabilir
                     ProductCard(
                         product = product,
                         onClick = { onProductClick(product) }

@@ -73,7 +73,6 @@ fun AddProductScreen() {
         if (uri != null) selectedImages[clickedBoxIndex] = uri
     }
 
-    // --- DÜZELTME: Metin Kutuları İçin Sabit Siyah Renk ---
     val textFieldColors = OutlinedTextFieldDefaults.colors(
         focusedContainerColor = Color.White,
         unfocusedContainerColor = Color.White,
@@ -141,7 +140,7 @@ fun AddProductScreen() {
                 Text("Ürün Başlığı", modifier = Modifier.fillMaxWidth(), fontWeight = FontWeight.Medium, color = Color.Black)
                 OutlinedTextField(
                     value = title, onValueChange = { title = it }, modifier = Modifier.fillMaxWidth(),
-                    colors = textFieldColors // Renk Düzeltmesi
+                    colors = textFieldColors
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -153,7 +152,7 @@ fun AddProductScreen() {
                         readOnly = true,
                         trailingIcon = { Icon(Icons.Default.ArrowDropDown, null, tint = Color.Black) },
                         modifier = Modifier.fillMaxWidth().clickable { expanded = true },
-                        colors = textFieldColors // Renk Düzeltmesi
+                        colors = textFieldColors
                     )
                     Box(modifier = Modifier.matchParentSize().clickable { expanded = true })
 
@@ -194,11 +193,10 @@ fun AddProductScreen() {
                 OutlinedTextField(
                     value = description, onValueChange = { description = it },
                     modifier = Modifier.fillMaxWidth().height(100.dp),
-                    colors = textFieldColors // Renk Düzeltmesi
+                    colors = textFieldColors
                 )
                 Spacer(modifier = Modifier.height(32.dp))
 
-                // BUTON
                 Button(
                     onClick = {
                         val currentUser = auth.currentUser
@@ -240,7 +238,6 @@ fun AddProductScreen() {
                                         .addOnSuccessListener {
                                             isLoading = false
                                             Toast.makeText(context, "Ürün Hibe Edildi! 🎉", Toast.LENGTH_LONG).show()
-                                            // Alanları temizle
                                             title = ""; description = ""; selectedImages.fill(null)
                                         }
                                         .addOnFailureListener {

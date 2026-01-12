@@ -34,7 +34,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.UUID
 
-// Renk Tanımları
 val DemandGreen = Color(0xFF66BB6A)
 val DialogOrange = Color(0xFFFF8A65)
 val BackgroundBeige = Color(0xFFFAF9F6)
@@ -51,7 +50,6 @@ fun ProductDetailScreen(
     val firestore = FirebaseFirestore.getInstance()
     val myUid = auth.currentUser?.uid
 
-    // Scroll durumu için state
     val scrollState = rememberScrollState()
 
     var showDialog by remember { mutableStateOf(false) }
@@ -60,16 +58,12 @@ fun ProductDetailScreen(
     var ownerName by remember { mutableStateOf("Yükleniyor...") }
     var myName by remember { mutableStateOf("") }
 
-    // Favori Durumu
     var isFavorite by remember { mutableStateOf(false) }
     var favoriteDocId by remember { mutableStateOf<String?>(null) }
 
-    // Ürün benim mi kontrolü
     val isMyProduct = (myUid != null && myUid == product.ownerId)
 
-    // Verileri Çek
     LaunchedEffect(product.ownerId, myUid) {
-        // 1. Sahip Adı
         if (product.ownerId.isNotEmpty()) {
             firestore.collection("users").document(product.ownerId).get()
                 .addOnSuccessListener { doc ->
@@ -83,7 +77,6 @@ fun ProductDetailScreen(
                 }
         }
 
-        // 2. Kendi Adım ve Favori Kontrolü
         if (myUid != null) {
             firestore.collection("users").document(myUid).get()
                 .addOnSuccessListener { doc ->
@@ -110,20 +103,17 @@ fun ProductDetailScreen(
     Scaffold(
         containerColor = BackgroundBeige
     ) { innerPadding ->
-        // ANA KAPSAYICI BOX (Sticky buton için gerekli)
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            // 1. KAYDIRILABİLİR İÇERİK
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(scrollState) // Scroll özelliği eklendi
-                    .padding(bottom = 80.dp) // Butonun altında kalmaması için alt boşluk
+                    .verticalScroll(scrollState)
+                    .padding(bottom = 80.dp)
             ) {
-                // --- RESİMLER BÖLÜMÜ ---
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -144,7 +134,6 @@ fun ProductDetailScreen(
                         }
                     }
 
-                    // Geri Butonu
                     IconButton(
                         onClick = onBackClick,
                         modifier = Modifier
@@ -156,7 +145,6 @@ fun ProductDetailScreen(
                         Icon(Icons.Default.ArrowBack, contentDescription = "Geri", tint = Color.Black)
                     }
 
-                    // Kalp (Favori) Butonu
                     IconButton(
                         onClick = {
                             if (myUid != null) {
@@ -187,7 +175,6 @@ fun ProductDetailScreen(
                         )
                     }
 
-                    // Çoklu resim göstergesi
                     if (imagesToShow.size > 1) {
                         Text(
                             text = "Fotoğrafları Kaydır ->",
@@ -202,7 +189,6 @@ fun ProductDetailScreen(
                     }
                 }
 
-                // --- BİLGİLER BÖLÜMÜ ---
                 Column(modifier = Modifier.padding(20.dp).fillMaxWidth()) {
                     Text(text = product.title, fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.Black)
                     Spacer(modifier = Modifier.height(8.dp))
@@ -223,17 +209,14 @@ fun ProductDetailScreen(
                         Spacer(modifier = Modifier.width(12.dp))
                         Column { Text(text = ownerName, fontWeight = FontWeight.Bold, fontSize = 16.sp) }
                     }
-                    // Buradaki Spacer'ı kaldırdık çünkü artık scroll var
                 }
             }
 
-            // 2. STICKY (YAPIŞKAN) AKSİYON BUTONLARI
-            // Box içinde Alignment.BottomCenter ile en alta sabitliyoruz
             Box(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .fillMaxWidth()
-                    .padding(20.dp) // Kenar boşlukları
+                    .padding(20.dp)
             ) {
                 if (isMyProduct) {
                     Button(
@@ -249,7 +232,6 @@ fun ProductDetailScreen(
                     Button(
                         onClick = {
                             isLoading = true
-                            // Talep gönderme işlemi
                             demandRepository.sendDemand(
                                 productId = product.id,
                                 ownerId = product.ownerId,
@@ -280,12 +262,10 @@ fun ProductDetailScreen(
             }
         }
 
-        // --- DİYALOG KUTUSU ---
         if (showDialog) {
             AlertDialog(
                 onDismissRequest = {
                     showDialog = false
-                    // Diyalog dışına basarsa geri dönsün
                     onBackClick()
                 },
                 containerColor = Color(0xFFFFF8F6),
@@ -301,7 +281,6 @@ fun ProductDetailScreen(
                     Button(
                         onClick = {
                             showDialog = false
-                            // BURASI KRİTİK: "Tamam" diyince Chat ekranına (Main Activity'e) sinyal gönderiyoruz.
                             onTalepEtClicked()
                         },
                         colors = ButtonDefaults.buttonColors(containerColor = DialogOrange)

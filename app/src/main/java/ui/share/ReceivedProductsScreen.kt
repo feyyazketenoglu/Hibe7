@@ -35,7 +35,6 @@ fun ReceivedProductsScreen(
     var receivedItems by remember { mutableStateOf<List<Demand>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
 
-    // SADECE "TAMAMLANMIŞ" (TESLİM ALDIĞIM) TALEPLERİ GETİR
     LaunchedEffect(myUid) {
         if (myUid != null) {
             firestore.collection("demands")
@@ -100,7 +99,6 @@ fun ReceivedItemCard(item: Demand) {
             modifier = Modifier.fillMaxSize().padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Ürün Resmi
             Card(shape = RoundedCornerShape(8.dp), modifier = Modifier.size(84.dp)) {
                 AsyncImage(
                     model = item.productImage,
@@ -112,14 +110,12 @@ fun ReceivedItemCard(item: Demand) {
 
             Spacer(modifier = Modifier.width(12.dp))
 
-            // Bilgiler
             Column(modifier = Modifier.weight(1f)) {
                 Text(text = item.productName, fontWeight = FontWeight.Bold, fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 Text(text = "Bağışlayan: (Diğer Kullanıcı)", color = Color.Gray, fontSize = 12.sp)
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                // Yeşil Etiket
                 Surface(
                     color = Color(0xFFE8F5E9),
                     shape = RoundedCornerShape(6.dp)

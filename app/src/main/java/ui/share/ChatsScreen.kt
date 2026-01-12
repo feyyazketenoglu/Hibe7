@@ -40,7 +40,6 @@ fun ChatScreen(
     val auth = FirebaseAuth.getInstance()
     val myUid = auth.currentUser?.uid
 
-    // Arka Plan Rengi
     val BackgroundColor = Color(0xFFFDFBF7)
 
     var channels by remember { mutableStateOf<List<ChatChannelItem>>(emptyList()) }
@@ -73,7 +72,7 @@ fun ChatScreen(
     }
 
     Scaffold(
-        containerColor = BackgroundColor, // <-- SİYAH EKRAN ÇÖZÜMÜ
+        containerColor = BackgroundColor,
         topBar = {
             TopAppBar(
                 title = { Text("Konuşmalarım", color = Color.White) },

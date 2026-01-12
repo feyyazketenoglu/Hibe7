@@ -41,7 +41,6 @@ fun SettingsScreen(
     }
 }
 
-// --- 1. AYARLAR MENÜSÜ ---
 @Composable
 fun SettingsMenuContent(
     onBackClick: () -> Unit,
@@ -64,14 +63,12 @@ fun SettingsMenuContent(
         "Hesabımı Kapat"
     )
 
-    // ANA KOLON ARKA PLANI
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFFDFBF7)) // <-- ARKA PLAN DÜZELTİLDİ
             .padding(16.dp)
     ) {
-        // Üst Bar
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(bottom = 16.dp)) {
             IconButton(onClick = onBackClick) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Geri", tint = Color.Black) }
             Text(text = "Ayarlar", fontSize = 22.sp, modifier = Modifier.padding(start = 8.dp), color = Color.Black)
@@ -102,7 +99,6 @@ fun SettingsMenuContent(
         }
     }
 
-    // HESAP SİLME DİYALOĞU
     if (showDeleteAccountDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteAccountDialog = false },
@@ -130,7 +126,6 @@ fun SettingsMenuContent(
     }
 }
 
-// --- 2. YENİ ŞİFRE DEĞİŞTİRME TASARIMI ---
 @Composable
 fun PasswordChangeDesign(onBack: () -> Unit) {
     var newPassword by remember { mutableStateOf("") }
@@ -143,15 +138,14 @@ fun PasswordChangeDesign(onBack: () -> Unit) {
     val CreamBackground = Color(0xFFFAF9F6)
     val InputBorderColor = HibeOrange
 
-    // Yazı renkleri için ayar
     val textFieldColors = OutlinedTextFieldDefaults.colors(
         focusedBorderColor = InputBorderColor,
         unfocusedBorderColor = InputBorderColor,
         focusedContainerColor = Color.White,
         unfocusedContainerColor = Color.White,
         cursorColor = HibeOrange,
-        focusedTextColor = Color.Black,   // <-- YAZI SİYAH
-        unfocusedTextColor = Color.Black  // <-- YAZI SİYAH
+        focusedTextColor = Color.Black,
+        unfocusedTextColor = Color.Black
     )
 
     Column(
@@ -159,7 +153,6 @@ fun PasswordChangeDesign(onBack: () -> Unit) {
             .fillMaxSize()
             .background(CreamBackground)
     ) {
-        // Üst Bar
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(16.dp)
@@ -187,7 +180,7 @@ fun PasswordChangeDesign(onBack: () -> Unit) {
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = PasswordVisualTransformation(),
                 singleLine = true,
-                colors = textFieldColors, // <-- Renkler atandı
+                colors = textFieldColors,
                 shape = RoundedCornerShape(4.dp)
             )
 
@@ -201,7 +194,7 @@ fun PasswordChangeDesign(onBack: () -> Unit) {
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = PasswordVisualTransformation(),
                 singleLine = true,
-                colors = textFieldColors, // <-- Renkler atandı
+                colors = textFieldColors,
                 shape = RoundedCornerShape(4.dp)
             )
 

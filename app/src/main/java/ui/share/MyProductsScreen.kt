@@ -39,11 +39,9 @@ fun MyProductsScreen(
     var myProducts by remember { mutableStateOf<List<Product>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
 
-    // Silme diyaloğu için state
     var showDeleteDialog by remember { mutableStateOf(false) }
     var productToDelete by remember { mutableStateOf<Product?>(null) }
 
-    // SADECE BENİM ÜRÜNLERİMİ GETİR (ownerId == myUid)
     LaunchedEffect(myUid) {
         if (myUid != null) {
             firestore.collection("products")
@@ -94,7 +92,6 @@ fun MyProductsScreen(
             }
         }
 
-        // SİLME ONAY KUTUSU
         if (showDeleteDialog && productToDelete != null) {
             AlertDialog(
                 onDismissRequest = { showDeleteDialog = false },
@@ -136,7 +133,6 @@ fun MyProductItem(product: Product, onDeleteClick: () -> Unit) {
             modifier = Modifier.fillMaxSize().padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Resim
             Card(shape = RoundedCornerShape(8.dp), modifier = Modifier.size(84.dp)) {
                 AsyncImage(
                     model = product.imageUrl,
@@ -148,7 +144,6 @@ fun MyProductItem(product: Product, onDeleteClick: () -> Unit) {
 
             Spacer(modifier = Modifier.width(12.dp))
 
-            // Bilgiler
             Column(modifier = Modifier.weight(1f)) {
                 Text(text = product.title, fontWeight = FontWeight.Bold, fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 Text(text = product.category, color = Color.Gray, fontSize = 14.sp)
@@ -156,7 +151,6 @@ fun MyProductItem(product: Product, onDeleteClick: () -> Unit) {
                 Text(text = if(product.isAvailable) "Yayında" else "Pasif", color = if(product.isAvailable) Color(0xFF4CAF50) else Color.Red, fontSize = 12.sp, fontWeight = FontWeight.Bold)
             }
 
-            // Sil Butonu
             IconButton(onClick = onDeleteClick) {
                 Icon(Icons.Default.Delete, contentDescription = "Sil", tint = Color.Red)
             }

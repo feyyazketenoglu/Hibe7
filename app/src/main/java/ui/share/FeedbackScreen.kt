@@ -29,7 +29,6 @@ fun FeedbackScreen(onBackClick: () -> Unit) {
     val auth = FirebaseAuth.getInstance()
     val firestore = FirebaseFirestore.getInstance()
 
-    // Tasarımdaki Yeşil Çerçeve Rengi
     val BorderGreen = Color(0xFF4CAF50)
     val BackgroundColor = Color(0xFFFDFBF7)
 
@@ -53,7 +52,6 @@ fun FeedbackScreen(onBackClick: () -> Unit) {
                 .fillMaxSize()
                 .padding(24.dp)
         ) {
-            // KONU ALANI
             Text("Konu", fontSize = 16.sp, fontWeight = FontWeight.Medium, color = Color.Black)
             Spacer(modifier = Modifier.height(8.dp))
             OutlinedTextField(
@@ -73,7 +71,6 @@ fun FeedbackScreen(onBackClick: () -> Unit) {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // İLETİ ALANI
             Text("İleti", fontSize = 16.sp, fontWeight = FontWeight.Medium, color = Color.Black)
             Spacer(modifier = Modifier.height(8.dp))
             OutlinedTextField(
@@ -94,13 +91,11 @@ fun FeedbackScreen(onBackClick: () -> Unit) {
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            // GÖNDER BUTONU
             Button(
                 onClick = {
                     if (subject.isNotEmpty() && message.isNotEmpty()) {
                         isLoading = true
 
-                        // Veriyi Firestore'a kaydet (İstersen burayı atlayabilirsin ama veri olması iyidir)
                         val feedbackData = hashMapOf(
                             "uid" to (auth.currentUser?.uid ?: "anonymous"),
                             "subject" to subject,
@@ -115,7 +110,7 @@ fun FeedbackScreen(onBackClick: () -> Unit) {
                             }
                             .addOnFailureListener {
                                 isLoading = false
-                                showDialog = true // Hata olsa bile kullanıcıya çaktırmadan başarılı gösterelim (Demo için)
+                                showDialog = true
                             }
                     }
                 },
@@ -135,11 +130,10 @@ fun FeedbackScreen(onBackClick: () -> Unit) {
         }
     }
 
-    // --- BAŞARI DİYALOĞU ---
     if (showDialog) {
         AlertDialog(
             onDismissRequest = { /* Boş */ },
-            containerColor = Color(0xFFFAF9F6), // Krem rengi arka plan
+            containerColor = Color(0xFFFAF9F6),
             title = null,
             text = {
                 Column(
@@ -155,12 +149,11 @@ fun FeedbackScreen(onBackClick: () -> Unit) {
                 }
             },
             confirmButton = {
-                // Tasarımdaki gibi ortalanmış turuncu buton
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                     Button(
                         onClick = {
                             showDialog = false
-                            onBackClick() // Sayfayı kapat ve geri dön
+                            onBackClick()
                         },
                         colors = ButtonDefaults.buttonColors(containerColor = HibeOrange),
                         shape = RoundedCornerShape(8.dp),

@@ -21,7 +21,6 @@ import com.example.hibe7.ui.auth.HibeOrange // Eğer bu yoksa: val HibeOrange = 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-// Renkler
 val TabSelectedColor = Color(0xFFFF7043)
 val InfoBackgroundColor = Color(0xFFE0F2F1) // Mesaj kutusu için açık yeşil
 val InfoTextColor = Color(0xFF00695C) // Mesaj yazısı için koyu yeşil
@@ -40,10 +39,8 @@ fun DemandsScreen(
     var incomingDemands by remember { mutableStateOf<List<Demand>>(emptyList()) }
     var outgoingDemands by remember { mutableStateOf<List<Demand>>(emptyList()) }
 
-    // Verileri Dinle
     LaunchedEffect(myUid) {
         if (myUid != null) {
-            // Gelenler (Benim Ürünüm)
             firestore.collection("demands")
                 .whereEqualTo("ownerId", myUid)
                 .addSnapshotListener { snapshot, _ ->
@@ -53,7 +50,6 @@ fun DemandsScreen(
                     }
                 }
 
-            // Gidenler (Benim İstediklerim)
             firestore.collection("demands")
                 .whereEqualTo("requesterId", myUid)
                 .addSnapshotListener { snapshot, _ ->
@@ -67,7 +63,6 @@ fun DemandsScreen(
 
     Scaffold(
         topBar = {
-            // Üst Bar Tasarımı
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -84,7 +79,6 @@ fun DemandsScreen(
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding).fillMaxSize().background(Color(0xFFFAF9F6))) {
 
-            // --- SEKMELER (TABS) ---
             TabRow(
                 selectedTabIndex = selectedTab,
                 containerColor = Color.White,
@@ -107,7 +101,6 @@ fun DemandsScreen(
                 }
             }
 
-            // --- LİSTE ---
             LazyColumn(
                 modifier = Modifier.fillMaxSize().padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -145,7 +138,6 @@ fun DemandItemCard(
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            // Ürün Adı
             Text(
                 text = demand.productName,
                 fontWeight = FontWeight.Bold,
@@ -155,7 +147,6 @@ fun DemandItemCard(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Kim İstedi / Kime İstedim?
             if (isIncoming) {
                 Text("Talep Eden: ${demand.requesterName}", color = Color.DarkGray, fontSize = 14.sp)
             } else {
@@ -164,7 +155,6 @@ fun DemandItemCard(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // --- BİLGİ KUTUSU (BUTONLAR YERİNE) ---
             Row(
                 modifier = Modifier
                     .fillMaxWidth()

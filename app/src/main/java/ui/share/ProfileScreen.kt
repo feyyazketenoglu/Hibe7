@@ -8,7 +8,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-// import androidx.compose.material.icons.automirrored.filled.ArrowBack <-- Gerek kalmadı
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.*
@@ -39,13 +38,11 @@ fun ProfileScreen(
     val auth = FirebaseAuth.getInstance()
     val firestore = FirebaseFirestore.getInstance()
 
-    // UI State'leri
     var userName by remember { mutableStateOf("Yükleniyor...") }
     var profileImageUrl by remember { mutableStateOf("") }
 
-    // --- SAYAÇLAR ---
-    var givenCount by remember { mutableIntStateOf(0) }   // Verilen Hibe Sayısı
-    var receivedCount by remember { mutableIntStateOf(0) } // Alınan Hibe Sayısı
+    var givenCount by remember { mutableIntStateOf(0) }
+    var receivedCount by remember { mutableIntStateOf(0) }
 
     val HibeGreen = Color(0xFF2E7D32)
     val HibeOrange = Color(0xFFFF7043)
@@ -54,18 +51,15 @@ fun ProfileScreen(
     LaunchedEffect(Unit) {
         val uid = auth.currentUser?.uid
         if (uid != null) {
-            // 1. Profil Bilgilerini Çek
             firestore.collection("users").document(uid).addSnapshotListener { document, _ ->
                 if (document != null) {
                     val email = document.getString("email") ?: ""
                     val nameFromEmail = email.split("@")[0]
-                    // İsim varsa onu kullan, yoksa mailden üretileni kullan
                     userName = if(document.getString("name") != null) document.getString("name")!! else "@$nameFromEmail"
                     profileImageUrl = document.getString("profileImageUrl") ?: ""
                 }
             }
 
-            // 2. VERİLEN HİBE SAYISI
             firestore.collection("demands")
                 .whereEqualTo("ownerId", uid)
                 .whereEqualTo("status", "completed")
@@ -73,7 +67,6 @@ fun ProfileScreen(
                     if (snapshot != null) givenCount = snapshot.size()
                 }
 
-            // 3. ALINAN HİBE SAYISI
             firestore.collection("demands")
                 .whereEqualTo("requesterId", uid)
                 .whereEqualTo("status", "completed")
@@ -84,14 +77,12 @@ fun ProfileScreen(
     }
 
     Column(modifier = Modifier.fillMaxSize().background(BackgroundColor)) {
-        // --- ÜST BAR (GÜNCELLENDİ: Geri Tuşu Yok) ---
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp, start = 16.dp, end = 16.dp), // Sol boşluk 8'den 16'ya çıktı (Dengelemek için)
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Profil Fotoğrafı (En solda artık bu var)
             Box(modifier = Modifier.size(45.dp).clip(CircleShape).border(1.dp, Color.Gray, CircleShape), contentAlignment = Alignment.Center) {
                 if (profileImageUrl.isNotEmpty()) Image(painter = rememberAsyncImagePainter(profileImageUrl), contentDescription = null, contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize())
                 else Icon(Icons.Default.Person, null, tint = Color.Gray, modifier = Modifier.padding(4.dp))
@@ -103,18 +94,15 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            // Ayarlar İkonu
             IconButton(onClick = onSettingsClick) { Icon(Icons.Outlined.Settings, "Ayarlar", tint = Color.Black) }
         }
 
-        // --- İSTATİSTİK ALANI ---
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 16.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            // Sol Taraf: Verilen Hibe
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
                     text = "$givenCount",
@@ -125,7 +113,6 @@ fun ProfileScreen(
                 Text(text = "Verilen Hibe", fontSize = 14.sp, color = Color.Gray)
             }
 
-            // Araya çizgi (Divider)
             Box(
                 modifier = Modifier
                     .height(40.dp)
@@ -133,7 +120,6 @@ fun ProfileScreen(
                     .background(Color.LightGray)
             )
 
-            // Sağ Taraf: Alınan Hibe
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
                     text = "$receivedCount",
@@ -147,7 +133,6 @@ fun ProfileScreen(
 
         Divider(color = Color.Black, thickness = 1.dp)
 
-        // HALKALAR
         Row(modifier = Modifier.fillMaxWidth().padding(vertical = 24.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
             StatCircleItem(label = "Aldıklarım", color = HibeGreen, onClick = onReceivedClick) {
                 Canvas(modifier = Modifier.fillMaxSize()) { drawCircle(color = HibeGreen, style = Stroke(width = 8f)) }

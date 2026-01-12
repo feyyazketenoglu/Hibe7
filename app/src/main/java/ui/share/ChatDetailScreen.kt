@@ -33,7 +33,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-// Mesaj Modeli
 data class Message(
     val id: String = "",
     val text: String = "",
@@ -68,7 +67,6 @@ fun ChatDetailScreen(
 
     val listState = rememberLazyListState()
 
-    // 1. Karşı Tarafın Bilgilerini ve Aktif Talebi Bul
     LaunchedEffect(channelId) {
         firestore.collection("chat_channels").document(channelId).get()
             .addOnSuccessListener { doc ->
@@ -104,7 +102,6 @@ fun ChatDetailScreen(
             }
     }
 
-    // 2. Mesajları Dinle
     LaunchedEffect(channelId) {
         firestore.collection("chat_channels").document(channelId)
             .collection("messages")
@@ -165,15 +162,12 @@ fun ChatDetailScreen(
                 .fillMaxSize()
                 .background(Color(0xFFFAF9F6))
         ) {
-            // --- ÜRÜNÜ TESLİM ET BUTONU ---
             if (isOwner && activeDemandId != null) {
                 Button(
                     onClick = {
-                        // 1. Talebi tamamlandı yap
                         firestore.collection("demands").document(activeDemandId!!)
                             .update("status", "completed")
 
-                        // 2. Ürünü pasif yap
                         if (productIdToGive != null) {
                             firestore.collection("products")
                                 .whereEqualTo("id", productIdToGive)
@@ -189,7 +183,6 @@ fun ChatDetailScreen(
                                 }
                         }
 
-                        // 3. Sistem mesajı gönder
                         val sysMsg = hashMapOf(
                             "text" to "✅ Ürün teslim edildi! İşlem tamamlandı.",
                             "senderId" to "SYSTEM",
@@ -209,7 +202,6 @@ fun ChatDetailScreen(
                 }
             }
 
-            // Mesaj Listesi
             LazyColumn(
                 state = listState,
                 modifier = Modifier.weight(1f).padding(horizontal = 16.dp),
@@ -222,7 +214,6 @@ fun ChatDetailScreen(
                 }
             }
 
-            // Mesaj Yazma Alanı
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -242,7 +233,6 @@ fun ChatDetailScreen(
                         focusedContainerColor = Color.White,
                         unfocusedContainerColor = Color.White,
                         cursorColor = HibeOrange,
-                        // --- DÜZELTME: Yazı rengini siyaha sabitledik ---
                         focusedTextColor = Color.Black,
                         unfocusedTextColor = Color.Black
                     ),

@@ -7,13 +7,11 @@ data class Product(
     val title: String = "",
     val description: String = "",
     val category: String = "",
-    val imageUrl: String = "", // Ana resim
-    val images: List<String> = emptyList(), // Diğer resimler
+    val imageUrl: String = "",
+    val images: List<String> = emptyList(),
     val ownerId: String = "",
     val timestamp: Long = 0,
 
-    // BU KISIM ÇOK KRİTİK:
-    // Kodda "isAvailable" kullan, Veritabanında "available" olarak kaydet/oku.
     @get:PropertyName("available")
     @set:PropertyName("available")
     var isAvailable: Boolean = true

@@ -64,10 +64,10 @@ fun MainScreen(
                     "cart" -> Box(
                         modifier = Modifier
                             .fillMaxSize()
-                            .background(Color(0xFFFDFBF7)), // <-- SEPET ARKA PLANI DÜZELTİLDİ
+                            .background(Color(0xFFFDFBF7)),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("Sepet Yakında...", color = Color.Black) // Yazı siyah yapıldı
+                        Text("Sepet Yakında...", color = Color.Black)
                     }
 
                     "profile" -> ProfileScreen(

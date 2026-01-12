@@ -50,7 +50,6 @@ fun EditProfileScreen(
         imageUri = uri
     }
 
-    // Verileri Çek
     LaunchedEffect(Unit) {
         val uid = auth.currentUser?.uid
         if (uid != null) {
@@ -66,7 +65,6 @@ fun EditProfileScreen(
         modifier = Modifier.fillMaxSize().padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Üst Kısım
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
@@ -79,7 +77,6 @@ fun EditProfileScreen(
 
         Spacer(modifier = Modifier.height(40.dp))
 
-        // RESİM ALANI
         Box(
             modifier = Modifier
                 .size(150.dp)
@@ -100,7 +97,6 @@ fun EditProfileScreen(
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        // YENİ: İSİM DEĞİŞTİRME ALANI
         OutlinedTextField(
             value = currentName,
             onValueChange = { currentName = it },
@@ -117,19 +113,16 @@ fun EditProfileScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // KAYDET BUTONU
         Button(
             onClick = {
                 val uid = auth.currentUser?.uid
                 if (uid != null) {
                     isLoading = true
 
-                    // Güncellenecek verileri hazırla
                     val updates = hashMapOf<String, Any>(
                         "name" to currentName
                     )
 
-                    // 1. Durum: Yeni resim seçildiyse önce yükle, sonra güncelle
                     if (imageUri != null) {
                         val storageRef = storage.reference.child("profile_images/$uid/${UUID.randomUUID()}.jpg")
                         storageRef.putFile(imageUri!!)
@@ -145,7 +138,6 @@ fun EditProfileScreen(
                                 Toast.makeText(context, "Resim yüklenemedi: ${it.message}", Toast.LENGTH_SHORT).show()
                             }
                     } else {
-                        // 2. Durum: Sadece isim değiştiyse direkt güncelle
                         updateUserFirestore(uid, updates, firestore, context, onBackClick) { isLoading = false }
                     }
                 }
@@ -161,7 +153,6 @@ fun EditProfileScreen(
     }
 }
 
-// Yardımcı Fonksiyon: Firestore Güncelleme
 fun updateUserFirestore(
     uid: String,
     updates: Map<String, Any>,
