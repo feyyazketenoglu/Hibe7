@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "67578729102",
+    "project_id": "hibe7-1eb1e",
+    "storage_bucket": "hibe7-1eb1e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:67578729102:android:9ab82e7e9f1fc17e706fdf",
+        "android_client_info": {
+          "package_name": "com.example.hibe7"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-VsSPpBqrQCkrr6jB9qfbE5HWH9VfvQc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
