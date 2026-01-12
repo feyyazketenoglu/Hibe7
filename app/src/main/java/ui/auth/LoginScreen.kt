@@ -70,7 +70,7 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(48.dp))
 
-        // EMAIL KUTUSU
+
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
@@ -154,7 +154,7 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // KAYIT OL LİNKİ
+
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text("Hesabın yok mu?", color = Color.Gray)
             TextButton(onClick = { onNavigateToRegister() }) {

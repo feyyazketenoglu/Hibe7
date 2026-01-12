@@ -53,7 +53,7 @@ fun RegisterScreen(
 
         Spacer(modifier = Modifier.height(40.dp))
 
-        // İSİM SOYİSİM
+
         OutlinedTextField(
             value = name,
             onValueChange = { name = it },
@@ -70,7 +70,7 @@ fun RegisterScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // EMAIL
+
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
@@ -88,7 +88,7 @@ fun RegisterScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // ŞİFRE
+
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
@@ -106,12 +106,11 @@ fun RegisterScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // KAYIT OL BUTONU
         Button(
             onClick = {
                 if (name.isNotEmpty() && email.isNotEmpty() && password.length >= 6) {
                     isLoading = true
-                    // AuthRepository'deki fonksiyonu çağırıyoruz (O zaten Firestore'a kaydediyor)
+
                     authRepository.registerUser(email.trim(), password, name) { success, message ->
                         isLoading = false
                         if (success) {
@@ -144,7 +143,7 @@ fun RegisterScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // GİRİŞ YAP YÖNLENDİRMESİ
+
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text("Zaten hesabın var mı?", color = Color.Gray)
             TextButton(onClick = { onNavigateToLogin() }) {

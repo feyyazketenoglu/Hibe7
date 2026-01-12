@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import com.example.hibe7.R // R sınıfını import etmeyi unutma
 
-// Tasarımındaki Turuncu renk
+
 val HibeOrange = Color(0xFFFF7043)
 
 @Composable
@@ -30,14 +30,14 @@ fun SplashScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(HibeOrange), // Arka plan yine turuncu kalsın
+            .background(HibeOrange),
         contentAlignment = Alignment.Center
     ) {
-        // ARTIK YAZI DEĞİL, LOGO RESMİNİ KULLANIYORUZ
+
         Image(
-            painter = painterResource(id = R.drawable.logo_hibe7_transparent), // Resim dosyasının adı
+            painter = painterResource(id = R.drawable.logo_hibe7_transparent),
             contentDescription = "Hibe7 Logo",
-            modifier = Modifier.size(300.dp) // Logonun ekrandaki boyutu (Büyütüp küçültebilirsin)
+            modifier = Modifier.size(300.dp)
         )
     }
 }
